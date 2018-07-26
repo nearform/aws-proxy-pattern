@@ -118,6 +118,8 @@ resource "aws_instance" "proxy" {
     # TODO: abstract out to a var
     key_name = "KHTurrell-default"
 
+    user_data = "${file("proxy_user_data.sh")}"
+
     network_interface {
         network_interface_id = "${aws_network_interface.proxy.id}"
         device_index = 0
