@@ -81,7 +81,10 @@ resource "aws_route_table" "public_routes" {
 resource "aws_route_table" "private_routes" {
     vpc_id = "${aws_vpc.aws_proxy_pattern_vpc.id}"
 
-    # TODO: Add default route to proxy
+    route {
+        cidr_block = "0.0.0.0/0"
+        network_interface_id = "${aws_network_interface.proxy.id}"
+    }
 
     tags {
         Name = "private_routes"
@@ -155,6 +158,10 @@ resource "aws_instance" "management_host" {
 
 output "proxy_public_ip" {
     value = "${aws_instance.proxy.public_ip}"
+}
+
+output "host_private_ip" {
+    value = "${aws_instance.proxy.private_ip}"
 }
 
 output "management_public_ip" {
