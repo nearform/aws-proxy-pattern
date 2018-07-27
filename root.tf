@@ -26,6 +26,15 @@ data "aws_ami" "ubuntu" {
     owners = ["099720109477"]
 }
 
+data "aws_ami" "amazon" {
+    most_recent = true
+
+    filter {
+        name = "name"
+        values = ["amzn-ami-hvm-2018.03.0.20180622-x86_64-gp2"]
+    }
+}
+
 # VPC Resources
 resource "aws_vpc" "aws_proxy_pattern_vpc" {
     cidr_block = "10.0.0.0/16"
@@ -112,7 +121,7 @@ resource "aws_network_interface" "proxy" {
 }
 
 resource "aws_instance" "proxy" {
-    ami = "${data.aws_ami.ubuntu.id}"
+    ami = "${data.aws_ami.amazon.id}"
     instance_type = "t2.micro"
 
     # TODO: abstract out to a var
