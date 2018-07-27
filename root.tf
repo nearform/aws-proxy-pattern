@@ -9,6 +9,11 @@ provider "aws" {
     profile = "default"
 }
 
+# Key pair to use for instances
+variable "key_pair_name" {
+    type = "string"
+}
+
 # Data inputs
 data "aws_ami" "ubuntu" {
     most_recent = true
@@ -124,8 +129,7 @@ resource "aws_instance" "proxy" {
     ami = "${data.aws_ami.amazon.id}"
     instance_type = "t2.micro"
 
-    # TODO: abstract out to a var
-    key_name = "KHTurrell-default"
+    key_name = "${var.key_pair_name}"
 
     user_data = "${file("proxy_user_data.sh")}"
 
@@ -145,8 +149,7 @@ resource "aws_instance" "host" {
     instance_type = "t2.micro"
     subnet_id = "${aws_subnet.private_subnet.id}"
 
-    # TODO: abstract out to a var
-    key_name = "KHTurrell-default"
+    key_name = "${var.key_pair_name}"
 
     tags {
         Name = "aws_proxy_pattern_host"
@@ -159,8 +162,7 @@ resource "aws_instance" "management_host" {
     instance_type = "t2.micro"
     subnet_id = "${aws_subnet.public_subnet.id}"
 
-    # TODO: abstract out to a var
-    key_name = "KHTurrell-default"
+    key_name = "${var.key_pair_name}"
 
     tags {
         Name = "aws_proxy_pattern_management_host"
