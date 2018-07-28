@@ -174,7 +174,7 @@ output "proxy_public_ip" {
 }
 
 output "host_private_ip" {
-    value = "${aws_instance.proxy.private_ip}"
+    value = "${aws_instance.host.private_ip}"
 }
 
 output "management_public_ip" {
