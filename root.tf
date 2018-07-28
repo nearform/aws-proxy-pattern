@@ -126,7 +126,7 @@ resource "aws_network_interface" "proxy" {
 }
 
 resource "aws_instance" "proxy" {
-    ami = "${data.aws_ami.amazon.id}"
+    ami = "${data.aws_ami.ubuntu.id}"
     instance_type = "t2.micro"
 
     key_name = "${var.key_pair_name}"
