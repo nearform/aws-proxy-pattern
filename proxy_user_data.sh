@@ -42,9 +42,18 @@ ssl_bump terminate step2 all
 http_access deny all
 EOF
 
+# Create certificates for SSL peek
+mkdir /etc/squid/ssl && cd /etc/squid/ssl
+openssl genrsa -out squid.key 2048
+openssl req -new -key squid.key -out squid.csr -subj "/C=XX/ST=XX/L=squid/O=squid/CN=squid"
+openssl x509 -req -days 3650 -in squid.csr -signkey squid.key -out squid.crt
+cat squid.key squid.crt | tee squid.pem
+
+# Pull squid image and run using config and cert setup above
 docker pull karlhopkinsonturrell/squid-alpine
 docker run -it -d --net host \
     --mount type=bind,src=/etc/squid/squid.conf,dst=/etc/squid/squid.conf \
+    --mount type=bind,src=/etc/squid/ssl,dst=/etc/squid/ssl \
     karlhopkinsonturrell/squid-alpine
 
 iptables -t nat -I PREROUTING 1 -s 10.0.2.0/24 -p tcp --dport 80 -j REDIRECT --to-port 3129
