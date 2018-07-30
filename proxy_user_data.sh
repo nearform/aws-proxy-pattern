@@ -49,13 +49,20 @@ openssl req -new -key squid.key -out squid.csr -subj "/C=XX/ST=XX/L=squid/O=squi
 openssl x509 -req -days 3650 -in squid.csr -signkey squid.key -out squid.crt
 cat squid.key squid.crt | tee squid.pem
 
+# Allow access to uid 31 (squid in container, unknown on host) to /var/log/squid/
+mkdir /var/log/squid
+chown 31:31 /var/log/squid/
+chmod u+rwx /var/log/squid/
+
 # Pull squid image and run using config and cert setup above
 docker pull karlhopkinsonturrell/squid-alpine
 docker run -it -d --net host \
     --mount type=bind,src=/etc/squid/squid.conf,dst=/etc/squid/squid.conf \
     --mount type=bind,src=/etc/squid/ssl,dst=/etc/squid/ssl \
+    --mount type=bind,src=/var/log/squid/,dst=/var/log/squid/ \
     karlhopkinsonturrell/squid-alpine
 
+# Route inbound traffic into squid
 iptables -t nat -I PREROUTING 1 -s 10.0.2.0/24 -p tcp --dport 80 -j REDIRECT --to-port 3129
 iptables -t nat -I PREROUTING 1 -s 10.0.2.0/24 -p tcp --dport 443 -j REDIRECT --to-port 3130
 
