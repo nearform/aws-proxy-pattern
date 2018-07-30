@@ -1,7 +1,3 @@
-# Inputs
-variable "key_pair_name" {}
-variable "proxy_network_interface_id" {}
-
 # Data inputs
 data "aws_ami" "ubuntu" {
     most_recent = true

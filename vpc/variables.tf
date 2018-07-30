@@ -1,3 +1,9 @@
+# SSH key pair inside AWS to use to access example host / mgmt host
+variable "key_pair_name" {}
+
+# Network interface ID for the proxy to use as a default route
+variable "proxy_network_interface_id" {}
+
 # CIDR block for example VPC
 variable "cidr_block" {
     type = "string"

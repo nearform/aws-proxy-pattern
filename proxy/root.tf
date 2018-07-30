@@ -1,7 +1,3 @@
-# Inputs
-variable "subnet_id" {}
-variable "key_pair_name" {}
-
 # Data inputs
 data "aws_ami" "ubuntu" {
     most_recent = true
