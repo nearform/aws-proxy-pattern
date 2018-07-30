@@ -1,19 +1,3 @@
-variable "region" {
-    type = "string"
-    default = "eu-west-2"
-}
-
-# Uses ~/.aws/credentials, default profile
-provider "aws" {
-    region = "${var.region}"
-    profile = "default"
-}
-
-# Key pair to use for instances
-variable "key_pair_name" {
-    type = "string"
-}
-
 # Data inputs
 data "aws_ami" "ubuntu" {
     most_recent = true
@@ -42,7 +26,7 @@ data "aws_ami" "amazon" {
 
 # VPC Resources
 resource "aws_vpc" "aws_proxy_pattern_vpc" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "${var.cidr_block}"
 
     tags {
         Name = "aws_proxy_pattern_vpc"
@@ -59,7 +43,7 @@ resource "aws_internet_gateway" "igw" {
 # internet access if it has a public IP
 resource "aws_subnet" "public_subnet" {
     vpc_id = "${aws_vpc.aws_proxy_pattern_vpc.id}"
-    cidr_block = "10.0.1.0/24"
+    cidr_block = "${var.cidr_public_subnet}"
     map_public_ip_on_launch = true
 
     tags {
@@ -71,7 +55,7 @@ resource "aws_subnet" "public_subnet" {
 # subnet
 resource "aws_subnet" "private_subnet" {
     vpc_id = "${aws_vpc.aws_proxy_pattern_vpc.id}"
-    cidr_block = "10.0.2.0/24"
+    cidr_block = "${var.cidr_private_subnet}"
 
     tags {
         Name = "aws_proxy_pattern_private_subnet"
@@ -127,7 +111,7 @@ resource "aws_network_interface" "proxy" {
 
 resource "aws_instance" "proxy" {
     ami = "${data.aws_ami.ubuntu.id}"
-    instance_type = "t2.micro"
+    instance_type = "${var.proxy_instance_type}"
 
     key_name = "${var.key_pair_name}"
 
