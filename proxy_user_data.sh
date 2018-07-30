@@ -1,6 +1,7 @@
 #!/bin/bash
 set -x
 
+# Install latest Docker
 apt update
 apt-get install -y \
     apt-transport-https \
@@ -15,6 +16,7 @@ add-apt-repository \
 apt update
 apt install -y docker-ce
 
+# Create squid configuration
 mkdir /etc/squid
 cat | tee /etc/squid/squid.conf <<EOF
 visible_hostname squid
@@ -22,7 +24,8 @@ visible_hostname squid
 #Handling HTTP requests
 http_port 3129 intercept
 acl allowed_http_sites dstdomain .amazonaws.com
-#acl allowed_http_sites dstdomain [you can add other domains to permit]
+acl allowed_http_sites dstdomain .httpbin.org
+acl allowed_http_sites dstdomain .security.ubuntu.com
 http_access allow allowed_http_sites
 
 #Handling HTTPS requests
@@ -30,7 +33,8 @@ https_port 3130 cert=/etc/squid/ssl/squid.pem ssl-bump intercept
 acl SSL_port port 443
 http_access allow SSL_port
 acl allowed_https_sites ssl::server_name .amazonaws.com
-#acl allowed_https_sites ssl::server_name [you can add other domains to permit]
+acl allowed_https_sites ssl::server_name .httpbin.org
+acl allowed_https_sites ssl::server_name .security.ubuntu.com
 acl step1 at_step SslBump1
 acl step2 at_step SslBump2
 acl step3 at_step SslBump3
