@@ -2,6 +2,8 @@
 
 ## Description
 
+![high level design](aws_proxy_pattern.png)
+
 https://github.com/nearform/pathfinders/issues/260
 
 A fairly common security best practice is to send outbound internet traffic through a proxy to facilitate monitoring and filtering. Transparent proxies make this easier by not requiring any specific configuration on the hosts.
