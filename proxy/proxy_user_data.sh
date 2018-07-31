@@ -24,7 +24,6 @@ visible_hostname squid
 #Handling HTTP requests
 http_port 3129 intercept
 acl allowed_http_sites dstdomain .amazonaws.com
-acl allowed_http_sites dstdomain .badssl.com
 acl allowed_http_sites dstdomain .security.ubuntu.com
 http_access allow allowed_http_sites
 
