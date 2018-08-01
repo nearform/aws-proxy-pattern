@@ -4,11 +4,38 @@
 
 ![high level design](aws_proxy_pattern.png)
 
-A fairly common security best practice is to send outbound internet traffic through a proxy to facilitate monitoring and filtering. Transparent proxies make this easier by not requiring any specific configuration on the hosts.
+A fairly common security best practice is to send outbound internet traffic
+through a proxy to facilitate monitoring and filtering. Transparent proxies
+make this easier by not requiring any specific configuration on the hosts.
 
-Making a terraform module to reproduce this architectural 'pattern' easily within an AWS VPC would allow people to bring up the required infrastructure and inspect the configuration to see how it works, or adapt it to their cloud provider. Accompanying it with an article about how to use the module and the benefits of a web proxy would encourage adoption and raise awareness of NearForm's expertise in security.
+This repository contains terraform modules to create such a proxy with an
+example network in AWS VPC to show how it works.
 
-AWS PrivateLink is an interesting way to develop this further by offering an endpoint in a customers private network for outbound traffic, so an outbound proxy could be run as a service and customers need only route outbound traffic towards the service.
+*TODO*: reference blog article once published here
+
+## Building
+
+1. `terraform init` in the project root
+2. Change the `provider.tf` profile if necessary to match your
+   `~/.aws/credentials` profile name if it is not `default`.
+3. Create a new EC2 key pair or use an existing one and provide the key pair
+   name to terraform as a variable, this will be used to protect access to the
+   instances in the example network. An easy way to do this is to add a file
+   called `terraform.tfvars` to the root of the project containing the line:
+   `key_pair_name = "<your_key_pair_name_here>"`
+4. `terraform plan`
+5. `terraform apply`
+
+## Testing
+
+Use the IP addresses output by terraform to SSH into the example host through
+the management host. Ensure you have SSH agent forwarding on to make this work,
+see the blog article for specific steps.
+
+Running `curl http://www.amazonaws.com` and `curl http://baddomain.com` should
+show that traffic is going through and being filtered by the proxy. This can be
+further verified over SSH to the proxy directly by tailing
+`/var/log/squid/access.log`.
 
 ## License
 
