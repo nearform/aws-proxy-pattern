@@ -12,7 +12,7 @@ AWS PrivateLink is an interesting way to develop this further by offering an end
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license](LICENSE.md)
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license](LICENSE)
 
 ## Contributing
 
