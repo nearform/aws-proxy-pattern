@@ -40,7 +40,7 @@ acl step3 at_step SslBump3
 ssl_bump peek step1 all
 ssl_bump peek step2 allowed_https_sites
 ssl_bump splice step3 allowed_https_sites
-ssl_bump terminate step2 all
+ssl_bump terminate step3 all
 
 http_access deny all
 EOF
