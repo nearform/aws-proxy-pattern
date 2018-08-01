@@ -12,8 +12,8 @@ AWS PrivateLink is an interesting way to develop this further by offering an end
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license](LICENSE.md)
 
 ## Contributing
 
-We have a [contributing guide](contributing) and a [code of conduct](coc).
+We have a [contributing guide](CONTRIBUTING.md) and a [code of conduct](CODE_OF_CONDUCT.md).
