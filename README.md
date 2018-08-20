@@ -11,7 +11,9 @@ make this easier by not requiring any specific configuration on the hosts.
 This repository contains terraform modules to create such a proxy with an
 example network in AWS VPC to show how it works.
 
-*TODO*: reference blog article once published here
+The blog article related to this repo can be found at:
+
+https://www.nearform.com/blog/building-a-transparent-proxy-in-aws-vpc-with-terraform-and-squid/
 
 ## Building
 
